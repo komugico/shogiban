@@ -66,7 +66,7 @@ class KifuModule extends React.Component {
 
     render() {
         return (
-            <Paper elevation={6}>
+            <Paper elevation={1}>
                 <Timeline position="alternate">
                     {this.tlItem(1, "７六歩", false)}
                     {this.tlItem(2, "３四歩", false)}

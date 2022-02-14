@@ -50,50 +50,46 @@ const Mochigoma = (type, count, player) => {
     }
 
     return (
-        <>
-            <Stack direction="row">
-                <Badge 
-                    badgeContent={String(count)}
-                    color={badge_color}
-                    anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                >
-                    <Avatar sx={sx} onClick={() => callback()}>
-                        {C.KOMA_TEXTS[type]}
-                    </Avatar>
-                </Badge>
-            </Stack>
-        </>
+        <Stack direction="row">
+            <Badge
+                badgeContent={String(count)}
+                color={badge_color}
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            >
+                <Avatar sx={sx} onClick={() => callback()}>
+                    {C.KOMA_TEXTS[type]}
+                </Avatar>
+            </Badge>
+        </Stack>
     )
 }
 
-const KomadaiBlock = (mochigoma, player) => {
+const KomadaiBlock = ({ mochigoma, player }) => {
     return (
-        <>
-            <Card>
-                <CardHeader
-                    title="player"
-                    subheader="rating"
-                />
-                <CardContent>
-                    <Stack direction="column" spacing={1}>
-                        {Mochigoma(C.KOMA_FU, mochigoma[0], player)}
-                        {Mochigoma(C.KOMA_KYOSHA, mochigoma[1], player)}
-                        {Mochigoma(C.KOMA_KEIMA, mochigoma[2], player)}
-                        {Mochigoma(C.KOMA_GIN, mochigoma[3], player)}
-                        {Mochigoma(C.KOMA_KIN, mochigoma[4], player)}
-                        {Mochigoma(C.KOMA_KAKU, mochigoma[5], player)}
-                        {Mochigoma(C.KOMA_HISHA, mochigoma[6], player)}
-                    </Stack>
-                    <br />
-                    <hr />
-                    <Stack direction="row" spacing={1}>
-                        <IconButton>
-                            <FlagCircleIcon color="error" />
-                        </IconButton>
-                    </Stack>
-                </CardContent>
-            </Card>
-        </>
+        <Card>
+            <CardHeader
+                title="player"
+                subheader="rating"
+            />
+            <CardContent>
+                <Stack direction="column" spacing={1}>
+                    {Mochigoma(C.KOMA_FU, mochigoma[0], player)}
+                    {Mochigoma(C.KOMA_KYOSHA, mochigoma[1], player)}
+                    {Mochigoma(C.KOMA_KEIMA, mochigoma[2], player)}
+                    {Mochigoma(C.KOMA_GIN, mochigoma[3], player)}
+                    {Mochigoma(C.KOMA_KIN, mochigoma[4], player)}
+                    {Mochigoma(C.KOMA_KAKU, mochigoma[5], player)}
+                    {Mochigoma(C.KOMA_HISHA, mochigoma[6], player)}
+                </Stack>
+                <br />
+                <hr />
+                <Stack direction="row" spacing={1}>
+                    <IconButton>
+                        <FlagCircleIcon color="error" />
+                    </IconButton>
+                </Stack>
+            </CardContent>
+        </Card>
     )
 }
 

@@ -8,8 +8,9 @@ import Typography from '@mui/material/Typography';
 import * as A from '../../stores/actions';
 import * as C from '../../stores/constants';
 import * as S from '../../stores/selectors';
-import * as actions from '../../stores/actions';
 import KomaAtom from '../atoms/KomaAtom';
+
+import * as AuthSelectors from '../../../auth/stores/selectors';
 
 const cell_style = {
     border: 1,
@@ -20,12 +21,13 @@ const cell_style = {
     zIndex: 1
 }
 
-const BoardColumn = (info, view, dan, suji) => {
+const BoardColumn = ({info, view, dan, suji}) => {
     const store = useStore();
 
     let grid_style = { };
     let box_style = { ...cell_style };
     let callback = null;
+    let f = null;
 
     let first_cell = ( view === C.PLAYER_SENTE ) ? 0 : 8;
     if ( dan != first_cell ) {
@@ -61,22 +63,27 @@ const BoardColumn = (info, view, dan, suji) => {
         );
     }
 
+    let token = useSelector(AuthSelectors.getJwtToken);
+    f = () => store.dispatch(
+        A.apiGetTaikyoku(token)
+    );
+
     if ( info.legal === true ) {
         grid_style = { ...grid_style, backgroundColor: "#EEEEEE" };
     }
 
     return (
         <>
-            <Grid item xs={1} sx={grid_style} onClick={() => callback()}>
+            <Grid item xs={1} sx={grid_style} onClick={() => f()}>
                 <Box sx={box_style}>
-                    {KomaAtom(info.koma, info.owner, info.grabbed, info.legal)}
+                    <KomaAtom koma={info.koma} owner={info.owner} grabbed={info.grabbed} legal={info.legal} />
                 </Box>
             </Grid>
         </>
     );
 }
 
-const BoardRow = (shogiban, view, dan) => {
+const BoardRow = ({shogiban, view, dan}) => {
     const dan_texts = [
         "一", "二", "三", "四", "五", "六", "七", "八", "九"
     ]
@@ -85,15 +92,15 @@ const BoardRow = (shogiban, view, dan) => {
         return (
             <>
                 <Grid item xs={1}></Grid>
-                {BoardColumn(shogiban[dan][0], view, dan, 0)}
-                {BoardColumn(shogiban[dan][1], view, dan, 1)}
-                {BoardColumn(shogiban[dan][2], view, dan, 2)}
-                {BoardColumn(shogiban[dan][3], view, dan, 3)}
-                {BoardColumn(shogiban[dan][4], view, dan, 4)}
-                {BoardColumn(shogiban[dan][5], view, dan, 5)}
-                {BoardColumn(shogiban[dan][6], view, dan, 6)}
-                {BoardColumn(shogiban[dan][7], view, dan, 7)}
-                {BoardColumn(shogiban[dan][8], view, dan, 8)}
+                <BoardColumn info={shogiban[dan][0]} view={view} dan={dan} suji={0} />
+                <BoardColumn info={shogiban[dan][1]} view={view} dan={dan} suji={1} />
+                <BoardColumn info={shogiban[dan][2]} view={view} dan={dan} suji={2} />
+                <BoardColumn info={shogiban[dan][3]} view={view} dan={dan} suji={3} />
+                <BoardColumn info={shogiban[dan][4]} view={view} dan={dan} suji={4} />
+                <BoardColumn info={shogiban[dan][5]} view={view} dan={dan} suji={5} />
+                <BoardColumn info={shogiban[dan][6]} view={view} dan={dan} suji={6} />
+                <BoardColumn info={shogiban[dan][7]} view={view} dan={dan} suji={7} />
+                <BoardColumn info={shogiban[dan][8]} view={view} dan={dan} suji={8} />
                 <Grid item xs={1}  style={{position: "relative"}}>
                     <p style={{width: "100%", margin: 0, position: "absolute", top: "50%", transform: "translate(0, -50%)", marginLeft: ".5rem"}}>
                         {dan_texts[dan]}
@@ -107,15 +114,15 @@ const BoardRow = (shogiban, view, dan) => {
         return (
             <>
                 <Grid item xs={1}></Grid>
-                {BoardColumn(shogiban[8 - dan][8], view, 8 - dan, 8)}
-                {BoardColumn(shogiban[8 - dan][7], view, 8 - dan, 7)}
-                {BoardColumn(shogiban[8 - dan][6], view, 8 - dan, 6)}
-                {BoardColumn(shogiban[8 - dan][5], view, 8 - dan, 5)}
-                {BoardColumn(shogiban[8 - dan][4], view, 8 - dan, 4)}
-                {BoardColumn(shogiban[8 - dan][3], view, 8 - dan, 3)}
-                {BoardColumn(shogiban[8 - dan][2], view, 8 - dan, 2)}
-                {BoardColumn(shogiban[8 - dan][1], view, 8 - dan, 1)}
-                {BoardColumn(shogiban[8 - dan][0], view, 8 - dan, 0)}
+                <BoardColumn info={shogiban[8 - dan][8]} view={view} dan={8 - dan} suji={8} />
+                <BoardColumn info={shogiban[8 - dan][7]} view={view} dan={8 - dan} suji={7} />
+                <BoardColumn info={shogiban[8 - dan][6]} view={view} dan={8 - dan} suji={6} />
+                <BoardColumn info={shogiban[8 - dan][5]} view={view} dan={8 - dan} suji={5} />
+                <BoardColumn info={shogiban[8 - dan][4]} view={view} dan={8 - dan} suji={4} />
+                <BoardColumn info={shogiban[8 - dan][3]} view={view} dan={8 - dan} suji={3} />
+                <BoardColumn info={shogiban[8 - dan][2]} view={view} dan={8 - dan} suji={2} />
+                <BoardColumn info={shogiban[8 - dan][1]} view={view} dan={8 - dan} suji={1} />
+                <BoardColumn info={shogiban[8 - dan][0]} view={view} dan={8 - dan} suji={0} />
                 <Grid item xs={1}  style={{position: "relative"}}>
                     <p style={{margin: 0, position: "absolute", top: "50%", transform: "translate(0, -50%)", marginLeft: ".5rem"}}>
                         {dan_texts[8 - dan]}
@@ -127,7 +134,7 @@ const BoardRow = (shogiban, view, dan) => {
     }
 }
 
-const BoardHeader = (view) => {
+const BoardHeader = ({view}) => {
     if (view === C.PLAYER_SENTE) {
         return (
             <>
@@ -171,20 +178,18 @@ const BoardBlock = () => {
     const shogiban = useSelector(S.selectShogiban);
 
     return (
-        <>
-            <Grid container rowSpacing={0} columnSpacing={0}>
-                {BoardHeader(view)}
-                {BoardRow(shogiban, view, 0)}
-                {BoardRow(shogiban, view, 1)}
-                {BoardRow(shogiban, view, 2)}
-                {BoardRow(shogiban, view, 3)}
-                {BoardRow(shogiban, view, 4)}
-                {BoardRow(shogiban, view, 5)}
-                {BoardRow(shogiban, view, 6)}
-                {BoardRow(shogiban, view, 7)}
-                {BoardRow(shogiban, view, 8)}
-            </Grid>
-        </>
+        <Grid container>
+            <BoardHeader view={view} />
+            <BoardRow shogiban={shogiban} view={view} dan={0} />
+            <BoardRow shogiban={shogiban} view={view} dan={1} />
+            <BoardRow shogiban={shogiban} view={view} dan={2} />
+            <BoardRow shogiban={shogiban} view={view} dan={3} />
+            <BoardRow shogiban={shogiban} view={view} dan={4} />
+            <BoardRow shogiban={shogiban} view={view} dan={5} />
+            <BoardRow shogiban={shogiban} view={view} dan={6} />
+            <BoardRow shogiban={shogiban} view={view} dan={7} />
+            <BoardRow shogiban={shogiban} view={view} dan={8} />
+        </Grid>
     )
 }
 

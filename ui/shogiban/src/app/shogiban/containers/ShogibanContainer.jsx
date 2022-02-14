@@ -7,18 +7,22 @@ import * as actions from '../stores/actions';
 import KifuModule from '../components/modules/KifuModule';
 import ShogibanModule from '../components/modules/ShogibanModule';
 
+import HeaderModule from '../../shared/HeaderModule';
+
 class ShogibanContainer extends React.Component {
-    
     render() {
         return (
-            <Grid container spacing={2}>
-                <Grid item xs={3}>
-                    <KifuModule />
+            <>
+                <HeaderModule />
+                <Grid container spacing={2}>
+                    <Grid item xs={3}>
+                        <KifuModule />
+                    </Grid>
+                    <Grid item xs={9}>
+                        <ShogibanModule />
+                    </Grid>
                 </Grid>
-                <Grid item xs={9}>
-                    <ShogibanModule />
-                </Grid>
-            </Grid>
+            </>
         );
     }
 }

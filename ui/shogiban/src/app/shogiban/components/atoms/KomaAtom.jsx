@@ -12,7 +12,7 @@ const koma_style = {
     zIndex: 0
 }
 
-const KomaAtom = (koma, owner, grabbed, legal) => {
+const KomaAtom = ({koma, owner, grabbed, legal}) => {
     let style = { ...koma_style };
     if (owner === C.PLAYER_GOTE) {
         style = { ...style, transform: "translate(0, -75%) rotate(180deg)"};

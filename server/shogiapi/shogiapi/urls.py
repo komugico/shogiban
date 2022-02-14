@@ -19,9 +19,9 @@ from rest_framework_jwt.views import obtain_jwt_token, verify_jwt_token, refresh
 
 urlpatterns = [
     path(r'admin/', admin.site.urls),
-    path(r'jwt/token/obtain/', obtain_jwt_token),
-    path(r'jwt/token/verify/', verify_jwt_token),
-    path(r'jwt/token/refresh/', refresh_jwt_token),
+    path(r'jwt/token/obtain', obtain_jwt_token),
+    path(r'jwt/token/verify', verify_jwt_token),
+    path(r'jwt/token/refresh', refresh_jwt_token),
     path(r'users/', include('users.urls')),
     path(r'shogiapi/', include('api.urls')),
 ]

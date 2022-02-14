@@ -5,14 +5,14 @@ import * as C from './constants';
 
 import { createSelector } from '@reduxjs/toolkit';
 
-export const getTurnCount = state => state.turn_count;
-export const getNextPlayer = state => state.next_player;
-export const getBoard = state => state.board;
-export const getMochigoma = state => state.mochigoma;
-export const getGrabbedKoma = state => state.grabbed_koma;
-export const getLegalMoves = state => state.legal_moves;
-export const getView = state => state.view;
-export const getKifu = state => state.kifu;
+export const getTurnCount = state => state.shogiban.turn_count;
+export const getNextPlayer = state => state.shogiban.next_player;
+export const getBoard = state => state.shogiban.board;
+export const getMochigoma = state => state.shogiban.mochigoma;
+export const getGrabbedKoma = state => state.shogiban.grabbed_koma;
+export const getLegalMoves = state => state.shogiban.legal_moves;
+export const getView = state => state.shogiban.view;
+export const getKifu = state => state.shogiban.kifu;
 
 export const selectMochigomaSente = createSelector(
     getMochigoma,

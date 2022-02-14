@@ -22,4 +22,4 @@ class KifuViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticated,)
     queryset = Kifu.objects.all()
     serializer_class = KifuSerializer
-    filter_fields = ('id', 'taikyoku', 'kyokumen', 'before')
+    filter_fields = ('id', 'taikyoku', 'kyokumen', 'turn', 'before')

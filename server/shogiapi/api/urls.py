@@ -1,9 +1,13 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
 from rest_framework import routers
 
 from .views import TaikyokuViewSet, KifuViewSet
 
+
+router = routers.DefaultRouter()
+router.register(r'taikyoku', TaikyokuViewSet)
+router.register(r'kifu', KifuViewSet)
+
 urlpatterns = [
-    url(r'taikyoku', TaikyokuViewSet),
-    url(r'kifu', KifuViewSet),
+    url(r'',  include(router.urls)),
 ]

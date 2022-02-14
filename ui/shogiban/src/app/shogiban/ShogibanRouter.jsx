@@ -2,19 +2,19 @@ import React from 'react';
 import { Route } from "react-router-dom";
 import { Provider } from 'react-redux';
 
-import ShogibanStore from './stores/store'
+import store from '../store';
 import ShogibanContainer from './containers/ShogibanContainer';
 
 class ShogibanRouter extends React.Component {
     render() {
         return (
-            <div>
-                <Route exact path="/shogiban">
-                    <Provider store={ShogibanStore} >
+            <>
+                <Route exact path="/shogiban/taikyoku">
+                    <Provider store={store}>
                         <ShogibanContainer />
                     </Provider>
                 </Route>
-            </div>
+            </>
         )
     }
 }

@@ -3,40 +3,42 @@
 /* ========================================================================== */
 import axios from 'axios';
 import { createAction } from '@reduxjs/toolkit';
-import { jsx } from '@emotion/react';
 
 /* ========================================================================== */
 /* Action Types                                                               */
 /* ========================================================================== */
-const GRAB_KOMA = '@shogiban/grab_koma';
+const SIGN_IN = '@auth/sign_in';
 
 /* ========================================================================== */
 /* Actions                                                                    */
 /* ========================================================================== */
-export const actGrabKoma = createAction(
-    GRAB_KOMA,
-    (source, index) => ({payload : { source: source, index: index } })
+export const actSignIn = createAction(
+    SIGN_IN,
+    (username, jwt_token) => ({ payload : { username: username, jwt_token: jwt_token } })
 )
 
 /* ========================================================================== */
 /* Asynchronous Actions (API)                                                 */
 /* ========================================================================== */
-export const apiGetTaikyoku = (token) => {
+const ROOT_API_URL = "http://localhost:8000/";
+
+export const apiSignIn = (username, password, url) => {
     return (dispatch) => {
-        axios.get(
-            "http://localhost:8000/shogiapi/kifu",
-            {
-                headers: {
-                    "Authorization": "JWT " + token,
-                    "Content-Type": "Application/json"
-                }
-            }
-        )
+        axios
+        .post(ROOT_API_URL + "jwt/token/obtain", {
+            username: username,
+            password: password
+        })
         .then(res => {
-            console.dir(res);
+            dispatch(actSignIn(
+                username,
+                res.data.token
+            ));
+            window.location.href = url;
         })
         .catch(err => {
-            console.dir(err);
+            alert(err.response.request.responseText);
+            console.dir(err)
         });
     }
 }
